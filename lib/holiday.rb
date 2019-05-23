@@ -1,6 +1,7 @@
 require 'pry'
 
 def second_supply_for_fourth_of_july(holiday_hash)
+  holiday_hash[:summer][:fourth_of_july][1]
   # given that holiday_hash looks like this:
   # {
   #   :winter => {
@@ -21,14 +22,20 @@ def second_supply_for_fourth_of_july(holiday_hash)
 end
 
 def add_supply_to_winter_holidays(holiday_hash, supply)
+  holiday_hash[:winter].values.each do |array|
+    array.push "Balloons"
+  end
   # holiday_hash is identical to the one above
   # add the second argument, which is a supply, to BOTH the
   # Christmas AND the New Year's arrays
+  holiday_hash
 
 end
 
 
 def add_supply_to_memorial_day(holiday_hash, supply)
+  holiday_hash[:spring][:memorial_day][1] = supply
+  holiday_hash
   # again, holiday_hash is the same as the ones above
   # add the second argument to the memorial day array
 
@@ -37,15 +44,33 @@ end
 def add_new_holiday_with_supplies(holiday_hash, season, holiday_name, supply_array)
   # code here
   # remember to return the updated hash
+  holiday_hash[season][holiday_name] = supply_array
+  holiday_hash
 
 end
 
 def all_winter_holiday_supplies(holiday_hash)
+  new_array = []
+  holiday_hash[:winter].values.each do |array|
+    array.each do |supply|
+      new_array.push(supply)
+    end
+  end
+  new_array
+
+
   # return an array of all of the supplies that are used in the winter season
 
 end
 
-def all_supplies_in_holidays(holiday_hash)
+def all_supplies_in_holidays(holiday_hash) 
+  holiday_hash.each do |season, data|
+    puts "#{season.to_s.capitalize}:"
+    data.each do |holiday,supply|
+      puts"  #{holiday.to_s.split('_').collect {|letter|letter.capitalize}.join(' ')}: #{supply.join(', ')}"
+    end
+  end
+
   # iterate through holiday_hash and print items such that your readout resembles:
   # Winter:
   #   Christmas: Lights, Wreath
@@ -57,6 +82,15 @@ def all_supplies_in_holidays(holiday_hash)
 end
 
 def all_holidays_with_bbq(holiday_hash)
+  holiday_hash.collect do |season,data|
+    data.collect do |holiday,supply|
+      holiday if supply.include?("BBQ")
+     
+    end
+  end.flatten.compact
+
+      
+
   # return an array of holiday names (as symbols) where supply lists
   # include the string "BBQ"
 
